@@ -108,3 +108,22 @@ circle:nth-child(2) {
     stroke: #007bff;
     transition: stroke-dasharray 0.5s ease;
 }
+
+
+.gpa-input-wrapper label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.remove-semester {
+    margin-left: 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.remove-semester:hover {
+    background-color: darkred;
+}

@@ -35,12 +35,17 @@ const Home = () => {
         }
     };
 
+    const handleRemoveSemester = () => {
+        if (semesters.length > 2) {
+            setSemesters(semesters.slice(0, -1));
+        }
+    };
+
     const calculateCgpa = () => {
         const totalPoints = semesters.reduce((acc, gpa) => acc + gpa, 0);
         const newCgpa = (totalPoints / semesters.length).toFixed(2);
         setCgpa(newCgpa);
     };
-
 
     const handleSaveCgpa = async () => {
         const token = localStorage.getItem('token');
@@ -89,17 +94,22 @@ const Home = () => {
             <h3>GPA to CGPA Converter</h3>
             <div className="gpa-inputs">
                 {semesters.map((gpa, index) => (
-                    <input
-                        key={index}
-                        type="number"
-                        value={gpa}
-                        onChange={(e) => {
-                            const newSemesters = [...semesters];
-                            newSemesters[index] = parseFloat(e.target.value);
-                            setSemesters(newSemesters);
-                        }}
-                        placeholder={`Semester ${index + 1} GPA`}
-                    />
+                    <div key={index} className="gpa-input-wrapper">
+                        <label>Enter semester {index + 1} GPA : </label>
+                        <input
+                            type="number"
+                            value={gpa}
+                            onChange={(e) => {
+                                const newSemesters = [...semesters];
+                                newSemesters[index] = parseFloat(e.target.value);
+                                setSemesters(newSemesters);
+                            }}
+                            placeholder={`Semester ${index + 1} GPA`}
+                        />
+                        {index === semesters.length - 1 && semesters.length > 2 && (
+                            <button className="remove-semester" onClick={handleRemoveSemester}>x</button>
+                        )}
+                    </div>
                 ))}
             </div>
             <button onClick={handleAddSemester}>Add Semester</button>
@@ -107,29 +117,26 @@ const Home = () => {
             <button onClick={calculateCgpa} style={{ marginLeft: '20px' }}>Calculate CGPA</button>
 
             {cgpa && (
-    <div className="cgpa-circular">
-        <svg viewBox="0 0 100 100" className="circle" transform="rotate(45, 50, 50)">
-            <g transform="rotate(45, 50, 50)">
-                <circle cx="50" cy="50" r="45" strokeWidth="7" fill="none" />
-                <circle
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    strokeWidth="7"
-                    fill="none"
-                    strokeDasharray={`${(cgpa / 10) * 283} ${283 - (cgpa / 10) * 283}`}
-                    stroke="green" // Change the color as needed
-                />
-                <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" transform="rotate(45, 50, 50)" className="cgpa-text">
-    {cgpa}
-</text>
-            </g>
-        </svg>
-    </div>
-)}
-
-
-
+                <div className="cgpa-circular">
+                    <svg viewBox="0 0 100 100" className="circle" transform="rotate(45, 50, 50)">
+                        <g transform="rotate(45, 50, 50)">
+                            <circle cx="50" cy="50" r="45" strokeWidth="7" fill="none" />
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="45"
+                                strokeWidth="7"
+                                fill="none"
+                                strokeDasharray={`${(cgpa / 10) * 283} ${283 - (cgpa / 10) * 283}`}
+                                stroke="green"
+                            />
+                            <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" transform="rotate(45, 50, 50)" className="cgpa-text">
+                                {cgpa}
+                            </text>
+                        </g>
+                    </svg>
+                </div>
+            )}
 
             {cgpa && (
                 <button onClick={handleSaveCgpa}>Save CGPA Record</button>
