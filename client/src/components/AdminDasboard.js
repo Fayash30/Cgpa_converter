@@ -10,7 +10,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchCgpaRecords = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/cgpa/allCgpas');
+                const response = await axios.get('https://cgpa-converter-rust.vercel.app/cgpa/allCgpas');
                 setCgpaRecords(response.data);
             } catch (err) {
                 console.error('Error fetching CGPA records', err);

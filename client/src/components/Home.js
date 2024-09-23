@@ -15,7 +15,7 @@ const Home = () => {
             // Fetch user data and CGPA records
             const fetchUserData = async () => {
                 try {
-                    const response = await axios.get('http://localhost:5000/auth/user', {
+                    const response = await axios.get('https://cgpa-converter-rust.vercel.app/auth/user', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setUser(response.data);
@@ -47,7 +47,7 @@ const Home = () => {
         const confirm = window.confirm("Are you sure you want to save your CGPA record?");
         if (confirm) {
             try {
-                await axios.post('http://localhost:5000/cgpa/save', 
+                await axios.post('https://cgpa-converter-rust.vercel.app/cgpa/save', 
                     { semesters: semesters.length, cgpa },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );

@@ -14,7 +14,7 @@ const Signup = () => {
     const handleSignup = async () => {
         
         try {
-            const response = await axios.post('http://localhost:5000/auth/register', {
+            const response = await axios.post('https://cgpa-converter-rust.vercel.app/auth/register', {
                 name,
                 user_name,
                 password
