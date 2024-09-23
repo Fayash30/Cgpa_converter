@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const [user_name, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState(''); // Error state
     const navigate = useNavigate();
 
     const handleLogin = async () => {
@@ -19,19 +19,24 @@ const Login = () => {
             
             // Save token and user details
             localStorage.setItem('token', response?.data?.token);
-            localStorage.setItem('isAdmin', response?.data?.isAdmin); 
+            localStorage.setItem('isAdmin', response?.data?.isAdmin);
             
+            setError(''); // Clear any previous errors on success
             navigate('/home');  
         } catch (err) {
-            console.error(err);
+            // Check if server responded with an error message
+            if (err.response && err.response.data) {
+                setError(err.response.data.message || 'Login failed'); // Use the error message from the server
+            } else {
+                setError('Check the username or password');
+            }
         }
     };
-    
 
     return (
         <div className="auth-container">
             <h1>Login</h1>
-            {error && <p className="error">{error}</p>}
+            {error && <p className="error">{error}</p>} {/* Display error message */}
             <input 
                 type="text" 
                 value={user_name} 
