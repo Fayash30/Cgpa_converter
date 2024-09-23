@@ -6,11 +6,14 @@ const URL = process.env.APPLICATION_URL;
 const cors = require('cors');
 
 const corsOptions = {
-    origin: URL,
-    methods:'GET,PUT,POST,DELETE,PATCH,HEAD'
-}
+    origin: 'https://gpa-converter-client.vercel.app', 
+    methods: 'GET,PUT,POST,DELETE,PATCH,HEAD',
+    credentials: true, 
+    optionsSuccessStatus: 200 
+};
 
 app.use(cors(corsOptions));
+
 
 app.use(express.json());
 
