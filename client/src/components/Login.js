@@ -11,7 +11,7 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/auth/login', {
+            const response = await axios.post('https://cgpa-converter-rust.vercel.app/auth/login', {
                 roll_no,
                 password
             });

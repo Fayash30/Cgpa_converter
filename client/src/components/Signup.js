@@ -17,7 +17,7 @@ const Signup = () => {
     useEffect(() => {
         const fetchDepartments = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/departments');  // Update URL accordingly
+                const response = await axios.get('https://cgpa-converter-rust.vercel.app/departments');  // Update URL accordingly
                 setDepartments(response?.data);
                 console.log(response)
             } catch (err) {
@@ -30,7 +30,7 @@ const Signup = () => {
 
     const handleSignup = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/auth/register', {
+            const response = await axios.post('https://cgpa-converter-rust.vercel.app/auth/register', {
                 name,
                 roll_no,
                 password,

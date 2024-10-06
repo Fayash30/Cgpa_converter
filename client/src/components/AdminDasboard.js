@@ -23,7 +23,7 @@ const AdminDashboard = () => {
         if (token) {
             const fetchUserData = async () => {
                 try {
-                    const response = await axios.get('http://127.0.0.1:5000/auth/user', {
+                    const response = await axios.get('https://cgpa-converter-rust.vercel.app/auth/user', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setUser(response.data);
@@ -38,7 +38,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchCgpaRecords = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/cgpa/allCgpas');
+                const response = await axios.get('https://cgpa-converter-rust.vercel.app/cgpa/allCgpas');
                 setCgpaRecords(response.data || []);
                 setFilteredCgpaRecords(response.data || []); // Initialize filtered CGPA records
             } catch (err) {
@@ -49,7 +49,7 @@ const AdminDashboard = () => {
 
         const fetchDepartments = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/departments');
+                const response = await axios.get('https://cgpa-converter-rust.vercel.app/departments');
                 setDepartments(response.data || []);
             } catch (err) {
                 console.error('Error fetching departments', err);
@@ -59,7 +59,7 @@ const AdminDashboard = () => {
 
         const fetchGpaRecords = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/gpa/all');
+                const response = await axios.get('https://cgpa-converter-rust.vercel.app/gpa/all');
                 const gpaData = response.data.data || []; // Ensure it defaults to an empty array
                 setGpaRecords(gpaData);
                 setFilteredGpaRecords(gpaData); // Set filtered records

@@ -17,7 +17,7 @@ const AddCourse = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://127.0.0.1:5000/courses/add', course);
+            const response = await axios.post('https://cgpa-converter-rust.vercel.app/courses/add', course);
             alert('Course added successfully!');
             setCourse({ title: '', code: '', creditScore: '' });
         } catch (error) {

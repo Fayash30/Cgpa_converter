@@ -31,7 +31,7 @@ const Home = () => {
         if (token) {
             const fetchUserData = async () => {
                 try {
-                    const response = await axios.get('http://127.0.0.1:5000/auth/user', {
+                    const response = await axios.get('https://cgpa-converter-rust.vercel.app/auth/user', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setUser(response.data);
@@ -47,7 +47,7 @@ const Home = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/courses');
+                const response = await axios.get('https://cgpa-converter-rust.vercel.app/courses');
                 setCourses(response.data); // Assuming response.data returns the list of courses
             } catch (err) {
                 console.error(err);
@@ -119,7 +119,7 @@ const Home = () => {
         const confirm = window.confirm("Are you sure you want to save your CGPA record?");
         if (confirm) {
             try {
-                await axios.post('http://127.0.0.1:5000/cgpa/save', 
+                await axios.post('https://cgpa-converter-rust.vercel.app/cgpa/save', 
                     { semesters: semesters.length, cgpa },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -139,7 +139,7 @@ const Home = () => {
     };
     const handleSaveGpa = async () => {
         try {
-            await axios.post('http://127.0.0.1:5000/gpa/save', {
+            await axios.post('https://cgpa-converter-rust.vercel.app/gpa/save', {
                 semester: semesterInput,
                 gpa
             }, {
