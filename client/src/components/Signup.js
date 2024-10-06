@@ -8,8 +8,8 @@ const Signup = () => {
     const [name, setName] = useState('');
     const [roll_no, setRollNumber] = useState('');
     const [password, setPassword] = useState('');
-    const [dept, setDept] = useState('');  // Add state for department
-    const [departments, setDepartments] = useState([]);  // Add state for department list
+    const [dept, setDept] = useState('');  
+    const [departments, setDepartments] = useState([]);  
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -17,9 +17,19 @@ const Signup = () => {
     useEffect(() => {
         const fetchDepartments = async () => {
             try {
-                const response = await axios.get('https://cgpa-converter-rust.vercel.app/departments');  // Update URL accordingly
-                setDepartments(response?.data);
-                console.log(response)
+                const response = await axios.get('https://cgpa-converter-rust.vercel.app/departments');  
+                const uniqueDepartments = [];
+                const departmentNames = new Set();  // Use Set to track unique department names
+
+                response.data.forEach(department => {
+                    if (!departmentNames.has(department.name.toLowerCase())) { // Check for duplicates (case-insensitive)
+                        uniqueDepartments.push(department);
+                        departmentNames.add(department.name.toLowerCase()); // Add to set
+                    }
+                });
+
+                setDepartments(uniqueDepartments);  // Set unique departments
+                console.log(response);
             } catch (err) {
                 console.error('Failed to fetch departments:', err);
                 setError('Failed to load departments');
@@ -34,7 +44,7 @@ const Signup = () => {
                 name,
                 roll_no,
                 password,
-                dept,  // Send department along with other data
+                dept,  
             });
             console.log('Signup successful');
             console.log(response?.data);
@@ -70,8 +80,8 @@ const Signup = () => {
             <label htmlFor="dept">Department:</label>
             <select id="dept" value={dept} onChange={(e) => setDept(e.target.value)} required>
                 <option value="" disabled>Select Department</option>
-                {departments.map(dept => (
-                    <option key={dept._id} value={dept._id}>{dept.name}</option>
+                {departments.map(department => (
+                    <option key={department._id} value={department._id}>{department.name}</option>
                 ))}
             </select>
 
