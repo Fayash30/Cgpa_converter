@@ -7,42 +7,55 @@ const verifyToken = require("../Middlewares/Auth");
 const router = express.Router();
 const usernameRegex = /^[a-zA-Z0-9_.-@#$%^&*]+$/;
 
+const Dept = require("../Models/DeptModel");  // Import Dept model
+
 router.post('/register', async (req, res) => {
-    try 
-    {
-       
-        const { name, user_name, password } = req.body;
-        if (!user_name) {
-            throw new Error("Enter your username.");
-          } else if (!usernameRegex.test(user_name)) {
-            throw new Error("Username must be 6-30 characters long and can contain letters, numbers, and symbols");
-          }
-        
-          if(!name) {
+    try {
+        const { name, roll_no, password, dept } = req.body;  // Include dept in the request body
+
+        if (!roll_no) {
+            throw new Error("Enter your Roll number.");
+        }
+
+        if (!name) {
             throw new Error("Enter your name.");
-          }
-          // Existing user check
-          const existingUser = await User.findOne({ user_name });
-          if (existingUser) {
-            throw new Error("Username already exists!");
-          }
-      
-          // Password validation and hashing
-          if (!password) {
+        }
+
+        // Check if the department is provided
+        if (!dept) {
+            throw new Error("Please select a department.");
+        }
+
+        // Validate if the dept exists in the Dept collection
+        const department = await Dept.findById(dept);
+        if (!department) {
+            throw new Error("Invalid department.");
+        }
+
+        // Existing user check
+        const existingUser = await User.findOne({ roll_no });
+        if (existingUser) {
+            throw new Error("Roll number already exists!");
+        }
+
+        // Password validation and hashing
+        if (!password) {
             throw new Error("Enter your password.");
-          } else if (!usernameRegex.test(password)) {
-            throw new Error("Your password is weak.It must be 6-30 characters long and can contain letters, numbers, and symbols");
-          }
-      
+        } else if (!usernameRegex.test(password)) {
+            throw new Error("Your password is weak. It must be 6-30 characters long and can contain letters, numbers, and symbols.");
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Save the user with dept
         await User.create({
-            user_name,
+            roll_no,
             name,
-            password: hashedPassword
+            password: hashedPassword,
+            dept  // Save the department ID
         });
 
-        res.send({ status: 'ok', data: req.body, message:"Signup Succesful" });
+        res.send({ status: 'ok', data: req.body, message: "Signup Successful" });
     } catch (err) {
         res.json({ status: 'error', error: err.message });
     }
@@ -50,19 +63,17 @@ router.post('/register', async (req, res) => {
 
 
 router.post('/login' , async (req , res)=>{
-    const {user_name , password } = req.body;
+    const {roll_no , password } = req.body;
 
-    if (!user_name) {
-        throw new Error("Enter your username.");
-      } else if (!usernameRegex.test(user_name)) {
-        throw new Error("Username must be 6-30 characters long and can contain letters, numbers, and symbols");
+    if (!roll_no) {
+        return res.json({ status : 'error' ,user:false , message : 'Enter your Roll number.'})
       }
 
-    const user = await User.findOne({user_name:user_name});
+    const user = await User.findOne({roll_no:roll_no});
     
     if(!user)
     {
-        return res.json({ status : 'error' ,user:false , message : 'Email does not exist'})
+        return res.json({ status : 'error' ,user:false , message : 'User does not exist'})
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);

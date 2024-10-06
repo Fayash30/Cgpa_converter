@@ -12,11 +12,14 @@ const CgpaSchema = new mongoose.Schema({
     },
     semesters: {
         type: String,
-        required: true
+        required: true,
+        min: 1
     },
     cgpa: {
         type: Number,
         required: true,
+        min: 0,
+        max: 10 
     }
 });
 

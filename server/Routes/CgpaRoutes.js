@@ -33,13 +33,18 @@ router.post('/save/', verifyToken, async (req, res) => {
 
 router.get('/allCgpas', async (req, res) => {
     try {
-        // Fetch all CGPA records from the database
-        const cgpaRecords = await Cgpa.find();
+        // Fetch all CGPA records along with the user's roll_no and department
+        const cgpaRecords = await Cgpa.find()
+            .populate({
+                path: 'userId',
+                select: 'roll_no dept name', // Selecting the fields you need
+                populate: { path: 'dept', select: 'name' } // Fetch the department name
+            });
+
         res.status(200).json(cgpaRecords);
     } catch (err) {
         res.status(500).json({ error: 'Error fetching CGPA records' });
     }
 });
-
 
 module.exports = router;
